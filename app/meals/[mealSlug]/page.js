@@ -1,9 +1,16 @@
 import classes from './page.module.css';
 import Image from 'next/image';
 import { getMeal } from '@/lib/meals';
+import { notFound } from 'next/navigation';
 
-export default function MealDetailsPage({ params }) {
-    const meal = getMeal(params.mealSlug);
+export default async function MealDetailsPage({ params }) {
+    // After Next.js 13+ App Router setup, params is now asynchronous
+    const { mealSlug } = await params;
+    const meal = getMeal(mealSlug);
+    if (!meal) {
+        // Calling this function will stop this component from executing and will show the closest not-found or error page
+        notFound();
+    }
     meal.instructions = meal.instructions.replace(/\n/g, '<br />');
     
     return (
