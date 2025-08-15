@@ -2,10 +2,17 @@ import MealsGrid from '@/components/meals/meals-grid';
 import classes from './page.module.css';
 import Link from 'next/link';
 import { getMeals } from '@/lib/meals';
+import { Suspense } from 'react';
 
-export default async function MealsPage() {
+//outsource data fetching, then we can wrap it inside Suspense component
+async function Meals() {
     // Since Next is React Server Component, we can directly call SQLite
     const meals = await getMeals();
+    return <MealsGrid meals={meals} />
+}
+
+
+export default function MealsPage() {
     return <>
         <header className={classes.header}>
             <h1>
@@ -22,7 +29,11 @@ export default async function MealsPage() {
             </p>
         </header>
         <main>
-            <MealsGrid meals={meals} />
+            {/* setup fallback prop to define the content should be shown while the wrapped component is loading some data 
+            Here we can return loading content while the Meals component is still loading*/}
+            <Suspense fallback={<p className={classes.loading}>Fetching meals...</p>}>
+                <Meals />
+            </Suspense>
         </main>
     </>
 }
