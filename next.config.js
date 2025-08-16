@@ -15,6 +15,12 @@ const nextConfig = {
           },
         ],
     },
+    webpack: (config, { dev }) => {
+      if (dev) {
+        config.devtool = "cheap-module-source-map"; // avoids eval
+      }
+      return config;
+    },
 }
 
 module.exports = nextConfig
