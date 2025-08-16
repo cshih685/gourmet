@@ -3,6 +3,21 @@ import Image from 'next/image';
 import { getMeal } from '@/lib/meals';
 import { notFound } from 'next/navigation';
 
+// define generateMetatdata (reserved function)
+export async function generateMetadata({ params }) {
+    // After Next.js 13+ App Router setup, params is now asynchronous
+    const { mealSlug } = await params;
+    const meal = getMeal(mealSlug);
+    if (!meal) {
+        // Calling this function will stop this component from executing and will show the closest not-found or error page
+        notFound();
+    }
+    return {
+        title: meal.title,
+        description: meal.summary,
+    };
+}
+
 export default async function MealDetailsPage({ params }) {
     // After Next.js 13+ App Router setup, params is now asynchronous
     const { mealSlug } = await params;
