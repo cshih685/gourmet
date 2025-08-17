@@ -43,12 +43,7 @@ const nextConfig = {
               {
                 key: 'Content-Security-Policy',
                 value:
-                  `
-                    default-src 'self';
-                    script-src 'self' 'unsafe-eval' 'unsafe-inline';
-                    style-src 'self' https://fonts.googleapis.com 'unsafe-inline';
-                    font-src 'self' https://fonts.gstatic.com;
-                  `.replace(/\s{2,}/g, ' ').trim()
+                  "default-src 'self'; script-src 'self' 'unsafe-eval' 'unsafe-inline' https://vercel.live; style-src 'self' https://fonts.googleapis.com 'unsafe-inline'; font-src 'self' https://fonts.gstatic.com; connect-src 'self' https://vercel.live;",
               },
             ],
           },                                                                                              
