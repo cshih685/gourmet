@@ -6,8 +6,8 @@ import { notFound } from 'next/navigation';
 // define generateMetatdata (reserved function)
 export async function generateMetadata({ params }) {
     // After Next.js 13+ App Router setup, params is now asynchronous
-    const { mealSlug } = await params;
-    const meal = getMeal(mealSlug);
+    // const { mealSlug } = await params;
+    const meal = getMeal(params.mealSlug);
     if (!meal) {
         // Calling this function will stop this component from executing and will show the closest not-found or error page
         notFound();
@@ -20,13 +20,20 @@ export async function generateMetadata({ params }) {
 
 export default async function MealDetailsPage({ params }) {
     // After Next.js 13+ App Router setup, params is now asynchronous
-    const { mealSlug } = await params;
-    const meal = getMeal(mealSlug);
+    // const { mealSlug } = await params;
+    const meal = getMeal(params.mealSlug);
     if (!meal) {
         // Calling this function will stop this component from executing and will show the closest not-found or error page
         notFound();
     }
-    meal.instructions = meal.instructions.replace(/\n/g, '<br />');
+    // meal.instructions = meal.instructions.replace(/\n/g, '<br />');
+    // Split instructions into lines and render as JSX
+  const instructions = meal.instructions.split('\n').map((line, index) => (
+    <span key={index}>
+      {line}
+      <br />
+    </span>
+  ));
     
     return (
         <>
@@ -43,10 +50,7 @@ export default async function MealDetailsPage({ params }) {
                 </div>
             </header>
             <main>
-                <p className={classes.instructions}
-                dangerouslySetInnerHTML={{
-                    __html: meal.instructions,
-                }}></p>
+                <p className={classes.instructions}>{instructions}</p>
             </main>
         </>
     );
