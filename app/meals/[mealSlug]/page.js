@@ -7,24 +7,33 @@ import { notFound } from 'next/navigation';
 export async function generateMetadata({ params }) {
     // After Next.js 13+ App Router setup, params is now asynchronous
     // const { mealSlug } = await params;
-    const meal = getMeal(params.mealSlug);
-    if (!meal) {
-        // Calling this function will stop this component from executing and will show the closest not-found or error page
-        notFound();
+    try {
+        const meal = await getMeal(params.mealSlug); // Await getMeal
+        if (!meal || !meal.title) {
+            notFound();
+        }
+        return {
+            title: meal.title,
+            description: meal.summary,
+        };
+    } catch (error) {
+    console.error('generateMetadata error:', error);
+    notFound(); // Or return default metadata
     }
-    return {
-        title: meal.title,
-        description: meal.summary,
-    };
 }
 
 export default async function MealDetailsPage({ params }) {
     // After Next.js 13+ App Router setup, params is now asynchronous
     // const { mealSlug } = await params;
-    const meal = getMeal(params.mealSlug);
-    if (!meal) {
-        // Calling this function will stop this component from executing and will show the closest not-found or error page
+    let meal;
+    try {
+        meal = await getMeal(params.mealSlug); // Await getMeal
+        if (!meal || !meal.title) {
         notFound();
+        }
+    } catch (error) {
+        console.error('MealDetailsPage error:', error);
+        return <div>Error loading meal. Please try again later.</div>;
     }
     // meal.instructions = meal.instructions.replace(/\n/g, '<br />');
     // Split instructions into lines and render as JSX
