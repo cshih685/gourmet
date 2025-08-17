@@ -21,6 +21,20 @@ const nextConfig = {
     //   }
     //   return config;
     // },
+    async headers() {
+      return [
+        {
+          source: '/(.*)',
+          headers: [
+            {
+              key: 'Content-Security-Policy',
+              value:
+                "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' https://cshih685-nextjs-gourmet.s3.us-east-2.amazonaws.com; connect-src 'self';",
+            },
+          ],
+        },
+      ];
+    },
 }
 
 module.exports = nextConfig

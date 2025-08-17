@@ -8,7 +8,8 @@ export async function generateMetadata({ params }) {
     // After Next.js 13+ App Router setup, params is now asynchronous
     // const { mealSlug } = await params;
     try {
-        const meal = await getMeal(params.mealSlug); // Await getMeal
+        const { mealSlug } = await params;
+        const meal = await getMeal(mealSlug); // Await getMeal
         if (!meal || !meal.title) {
             notFound();
         }
@@ -27,7 +28,8 @@ export default async function MealDetailsPage({ params }) {
     // const { mealSlug } = await params;
     let meal;
     try {
-        meal = await getMeal(params.mealSlug); // Await getMeal
+        const { mealSlug } = await params;
+        meal = await getMeal(mealSlug);  // Await getMeal
         if (!meal || !meal.title) {
         notFound();
         }
