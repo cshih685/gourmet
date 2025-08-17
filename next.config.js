@@ -43,7 +43,7 @@ const nextConfig = {
               {
                 key: 'Content-Security-Policy',
                 value:
-                  "default-src 'self'; script-src 'self' 'unsafe-eval'; style-src 'self' https://fonts.googleapis.com ;",
+                  "default-src 'self'; script-src 'self' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; style-src 'self' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com;",
               },
             ],
           },
